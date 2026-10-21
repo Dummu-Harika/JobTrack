@@ -1,0 +1,145 @@
+
+{% extends "base.html" %}
+
+{% block title %}Add Application | JobTrack{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-header">
+        <h1>Add Job Application</h1>
+        <p>Track a new job opportunity and keep your job search organized.</p>
+    </div>
+
+    <div class="form-card">
+        {% if errors %}
+            <div class="alert alert-danger">
+                <strong>Please correct the following errors:</strong>
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('add_application') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="company_name">Company Name *</label>
+                    <input type="text" id="company_name" name="company_name"
+                           value="{{ request.form.get('company_name', '') }}"
+                           maxlength="150" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_role">Job Role *</label>
+                    <input type="text" id="job_role" name="job_role"
+                           value="{{ request.form.get('job_role', '') }}"
+                           maxlength="150" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="package_lpa">Package (LPA)</label>
+                    <input type="number" id="package_lpa" name="package_lpa"
+                           step="0.01" min="0"
+                           value="{{ request.form.get('package_lpa', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location"
+                           maxlength="200"
+                           value="{{ request.form.get('location', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="application_date">Application Date</label>
+                    <input type="date" id="application_date" name="application_date"
+                           value="{{ request.form.get('application_date', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="follow_up_date">Follow-up Date</label>
+                    <input type="date" id="follow_up_date" name="follow_up_date"
+                           value="{{ request.form.get('follow_up_date', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Application Status *</label>
+                    {% set selected_status = request.form.get('status', 'Applied') %}
+                    <select id="status" name="status" required>
+                        {% for status_option in ["Applied", "Assessment", "Interview", "Offer", "Rejected"] %}
+                            <option value="{{ status_option }}"
+                                {% if selected_status == status_option %}selected{% endif %}>
+                                {{ status_option }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_url">Job URL</label>
+                    <input type="url" id="job_url" name="job_url"
+                           maxlength="2048"
+                           value="{{ request.form.get('job_url', '') }}"
+                           placeholder="https://company.com/careers">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="4" maxlength="5000"
+                              placeholder="Recruiter details, interview preparation, or other notes...">{{ request.form.get('notes', '') }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Save Application</button>
+                <a href="{{ url_for('applications') }}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-page { max-width: 900px; margin: 0 auto; }
+    .form-header { margin-bottom: 24px; }
+    .form-header p { margin-top: -8px; }
+    .form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+    }
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+    .form-group { min-width: 0; }
+    .form-group label { margin-top: 0; margin-bottom: 7px; font-size: 14px; }
+    .form-group input, .form-group select, .form-group textarea { margin-top: 0; }
+    .form-group textarea { resize: vertical; }
+    .full-width { grid-column: 1 / -1; }
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 26px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+        .form-card { padding: 18px; }
+        .form-grid { grid-template-columns: 1fr; }
+        .full-width { grid-column: auto; }
+    }
+</style>
+{% endblock %}

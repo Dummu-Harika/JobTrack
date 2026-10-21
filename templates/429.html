@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Too Many Requests</h1>
+    <p>You have made too many requests in a short period.</p>
+    <p>Please wait a minute and try again.</p>
+    <a href="{{ url_for('home') }}">Return to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,198 @@
+
+{% extends "base.html" %}
+
+{% block title %}JobTrack | Manage Your Job Search{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="hero-badge">YOUR CAREER, ORGANIZED</span>
+
+        <h1>
+            Your Job Search,<br>
+            <span class="hero-highlight">All in One Place.</span>
+        </h1>
+
+        <p>
+            Stop tracking job applications in scattered spreadsheets.
+            Organize applications, monitor interview progress, and
+            never miss an important follow-up with JobTrack.
+        </p>
+
+        <div class="hero-actions">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('applications') }}" class="btn">
+                    View My Applications →
+                </a>
+
+                <a
+                    href="{{ url_for('add_application') }}"
+                    class="btn btn-secondary"
+                >
+                    + Add Application
+                </a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn">
+                    Get Started Free →
+                </a>
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="btn btn-secondary"
+                >
+                    Sign In
+                </a>
+            {% endif %}
+        </div>
+
+        <p class="hero-note">
+            Simple tracking. Better organization. A clearer career journey.
+        </p>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-heading">
+        <span class="section-label">WHAT YOU CAN DO</span>
+        <h2>Everything you need to manage your job hunt</h2>
+        <p>
+            Keep your applications organized from the first submission
+            to the final offer.
+        </p>
+    </div>
+
+    <div class="features-grid">
+        <article class="feature-card">
+            <div class="feature-icon icon-purple">01</div>
+            <h3>Track Applications</h3>
+            <p>
+                Record company names, job roles, locations, salary
+                packages, application dates, and job links in one place.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon icon-blue">02</div>
+            <h3>Monitor Progress</h3>
+            <p>
+                Track each opportunity through Applied, Assessment,
+                Interview, Offer, and Rejected statuses.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon icon-orange">03</div>
+            <h3>Never Miss Follow-ups</h3>
+            <p>
+                Save follow-up dates and review overdue or upcoming
+                reminders while managing your applications.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon icon-green">04</div>
+            <h3>Review Your Progress</h3>
+            <p>
+                View application totals, interview counts, offers,
+                and rejections to understand your job-search progress.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="workflow-section">
+    <div class="workflow-content">
+        <span class="section-label">GET STARTED IN THREE STEPS</span>
+        <h2>Make your job search more manageable</h2>
+
+        <div class="workflow-step">
+            <span class="step-number">1</span>
+            <div>
+                <h3>Create your account</h3>
+                <p>Register securely to access your personal tracker.</p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span class="step-number">2</span>
+            <div>
+                <h3>Add job opportunities</h3>
+                <p>Save the details whenever you apply for a position.</p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span class="step-number">3</span>
+            <div>
+                <h3>Update and review</h3>
+                <p>Update statuses and check your follow-up reminders.</p>
+            </div>
+        </div>
+
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('applications') }}" class="btn">
+                Go to My Tracker →
+            </a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn">
+                Create Your Account →
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="workflow-visual" aria-hidden="true">
+        <div class="preview-window">
+            <div class="preview-header">
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+                <span class="preview-title">JobTrack Dashboard</span>
+            </div>
+
+            <div class="preview-body">
+                <p class="preview-caption">YOUR JOB SEARCH</p>
+
+                <div class="preview-stat">
+                    <span>Applications</span>
+                    <strong>Track every opportunity</strong>
+                </div>
+
+                <div class="preview-stat">
+                    <span>Interviews</span>
+                    <strong>Stay prepared</strong>
+                </div>
+
+                <div class="preview-stat">
+                    <span>Follow-ups</span>
+                    <strong>Keep on schedule</strong>
+                </div>
+
+                <div class="preview-status">
+                    <span class="preview-status-dot"></span>
+                    Your next career step starts here
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Ready to organize your job search?</h2>
+    <p>
+        Bring your opportunities, application statuses, and follow-up
+        dates together in one simple workspace.
+    </p>
+
+    {% if session.get('user_id') %}
+        <a href="{{ url_for('add_application') }}" class="btn">
+            Add Your Next Application →
+        </a>
+    {% else %}
+        <a href="{{ url_for('register') }}" class="btn">
+            Start Tracking Today →
+        </a>
+    {% endif %}
+</section>
+
+{% endblock %}

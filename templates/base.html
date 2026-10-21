@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}JobTrack{% endblock %}</title>
+
+    <meta
+        name="description"
+        content="JobTrack helps you manage job applications, track progress, and remember follow-ups."
+    >
+
+    <meta name="theme-color" content="#4f46e5">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="brand" href="{{ url_for('home') }}">
+                <span class="brand-icon" aria-hidden="true">J</span>
+                <span>JobTrack</span>
+            </a>
+
+            <div class="nav-links">
+                <a
+                    href="{{ url_for('home') }}"
+                    class="nav-link"
+                >
+                    Home
+                </a>
+
+                {% if session.get('user_id') %}
+                    <a
+                        href="{{ url_for('applications') }}"
+                        class="nav-link"
+                    >
+                        Applications
+                    </a>
+
+                    <a
+                        href="{{ url_for('add_application') }}"
+                        class="nav-link nav-link-primary"
+                    >
+                        + Add Application
+                    </a>
+
+                    <a
+                        href="{{ url_for('profile') }}"
+                        class="nav-link"
+                    >
+                        My Profile
+                    </a>
+
+                    <span class="nav-user">
+                        Hi, {{ session.get('user_name', 'User') }}
+                    </span>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('logout') }}"
+                        class="logout-form"
+                    >
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
+                        >
+
+                        <button
+                            type="submit"
+                            class="nav-logout"
+                        >
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a
+                        href="{{ url_for('login') }}"
+                        class="nav-link"
+                    >
+                        Login
+                    </a>
+
+                    <a
+                        href="{{ url_for('register') }}"
+                        class="nav-link nav-link-primary"
+                    >
+                        Get Started
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section
+                    class="flash-messages"
+                    aria-label="Notifications"
+                    aria-live="polite"
+                >
+                    {% for category, message in messages %}
+                        <div
+                            class="flash-message
+                            {% if category == 'success' %}
+                                flash-success
+                            {% elif category == 'error' or category == 'danger' %}
+                                flash-error
+                            {% else %}
+                                flash-info
+                            {% endif %}"
+                            role="{% if category == 'error' or category == 'danger' %}alert{% else %}status{% endif %}"
+                        >
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            &copy; {{ now_year if now_year is defined else 2026 }}
+            JobTrack. Keep your career journey organized.
+        </p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
